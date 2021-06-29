@@ -4,13 +4,13 @@ const Config = require("./config.json");
 const Commands = require("./scripts/commandsReader.js")(Config.prefix);
 require("dotenv").config();
 
-const http = require('http');
+const https = require('https');
 const express = require('express');
 const app = express();
 app.get("/", (request, response) => response.sendStatus(200));
 app.listen(process.env.PORT);
 setInterval(() => {
-  	http.get(`${process.env.PROJECT_DOMAIN}`);
+  	https.get(`${process.env.PROJECT_DOMAIN}`);
 }, 280000);
 
 Client.on("ready", () => {
