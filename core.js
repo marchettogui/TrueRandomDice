@@ -14,6 +14,7 @@ setInterval(() => {
 }, 280000);
 
 Client.on("ready", () => {
+	console.log("Pai tá on");
 	Client.users.fetch(process.env.ID).then(user => user.send("Pai tá on!"));
   	setInterval(() => {
     	Client.users.fetch(process.env.ID).then(user => user.send("Ping 5min"));  
