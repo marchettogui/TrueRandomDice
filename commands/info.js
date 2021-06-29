@@ -1,5 +1,5 @@
 module.exports = (Client, message) => {
-	const Config = require("./config.json");
+	const Config = require("../config.json");
 
 	message.channel.send({embed: {color: message.author.id % 0xFFFFFF, title: "TrueRandomDice - Jonathan", description: "Carinhosamente chamado de Jonathan, nosso amigo bot levemente passivo-agressivo usa números verdadeiramente aleatórios gerados pelo random.org para rolar seus dados de RPG ;D", fields: [
 		{name: "Comandos", value: `${Config.prefix}info e ${Config.prefix}roll`}, 
