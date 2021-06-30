@@ -23,7 +23,7 @@ module.exports = (Client, message) => {
 				});
 				result_string = getResultString(elements);
 
-				message.channel.send({embed: {type: "article", color: message.author.id % 0xFFFFFF, fields: [{name: `${message.author.username}`, value: `${result_string}`, inline: false}]}});
+				message.channel.send({embed: {type: "rich", color: message.author.id % 0xFFFFFF, fields: [{name: `${message.member.displayName}`, value: `${result_string}`}]}});
 			} else {
 				console.log(`error ${Request.status} ${Request.statusText}`);
 			}
@@ -51,9 +51,9 @@ function getExpressionElements(expression) {
 }
 
 function pushDice(elements, buffer) {
-	if (buffer == [] || buffer.indexOf("d") != buffer.lastIndexOf("d") || isNaN(parseInt(buffer)) || parseInt(buffer) <= 0 || parseInt(buffer) > 10000) return false;
+	if (buffer == [] || buffer.indexOf("d") != buffer.lastIndexOf("d") || isNaN(parseInt(buffer)) || parseInt(buffer) <= 0) return false;
 	if (buffer.includes("d")) {
-		if (isNaN(parseInt(buffer.join("").split("d")[1])) || parseInt(buffer.join("").split("d")[1]) <= 0 || parseInt(buffer.join("").split("d")[1]) > 10000) return false;
+		if (isNaN(parseInt(buffer.join("").split("d")[1])) || parseInt(buffer.join("").split("d")[1]) <= 0) return false;
 		elements.push({type: "dice", quantity: parseInt(buffer.join("").split("d", 2)[0]), faces: parseInt(buffer.join("").split("d", 2)[1])});
 	} else {
 		elements.push({type: "number", values: parseInt(buffer)})
