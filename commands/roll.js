@@ -5,7 +5,7 @@ module.exports = (Client, message) => {
 	var elements = [];
 	var rolls = [];
 
-	if (elements = getExpressionElements(expression) && rolls = getRolls(elements)) {
+	if ((elements = getExpressionElements(expression)) && (rolls = getRolls(elements))) {
 		
 		Request.open("GET", `https://www.random.org/integers/?num=${rolls.quantity}&min=1&max=${rolls.faces_mmc}&col=1&base=10&format=plain&rnd=new`);
 		Request.send();
