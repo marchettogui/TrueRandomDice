@@ -1,4 +1,5 @@
 module.exports = (Client, message) => {
+	const Config = require("../config.json");
 	const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 	const Request = new XMLHttpRequest();
 	var expression = message.content.split(" ").slice(1, ).join("");
@@ -28,7 +29,7 @@ module.exports = (Client, message) => {
 			}
 		}
 	} else {
-		message.channel.send({embed: {color: message.author.id % 0xFFFFFF, title: "Seu burro! Não é assim que rola dados!", description: "Veja em $info como me mandar rolar seus dados\n*Jonathan sai e bate a porta*\nOuve-se ao fundo: \"Verme insolente!\""}})
+		message.channel.send({embed: {color: message.author.id % 0xFFFFFF, title: "Seu burro! Não é assim que rola dados!", description: `Veja em ${Config.prefix}info como me mandar rolar seus dados\n*Jonathan sai e bate a porta*\nOuve-se ao fundo: \"Verme insolente!\"`}})
 	}
 }
 
