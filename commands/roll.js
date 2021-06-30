@@ -140,5 +140,6 @@ function getResultString(elements) {
 	}
 	if (elements.length > 1 || elements[0].values.length > 1) result_string.push("=", result);
 
-	return result_string.join("");
+	if (result_string.join("").length <= 1024) return result_string;
+	else return "Resposta muito longa, aí está o resultado final: ".concat(result.toString(), "\nAceite!");
 }
