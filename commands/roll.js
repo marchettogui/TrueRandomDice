@@ -3,9 +3,9 @@ module.exports = (Client, message) => {
 	const Request = new XMLHttpRequest();
 	var expression = message.content.split(" ").slice(1, ).join("");
 	var elements = [];
+	var rolls = [];
 
-	if (elements = getExpressionElements(expression)) {
-		var rolls = getRolls(elements);
+	if (elements = getExpressionElements(expression) && rolls = getRolls(elements)) {
 		
 		Request.open("GET", `https://www.random.org/integers/?num=${rolls.quantity}&min=1&max=${rolls.faces_mmc}&col=1&base=10&format=plain&rnd=new`);
 		Request.send();
@@ -49,10 +49,10 @@ function getExpressionElements(expression) {
 	return elements;
 }
 
-function pushDice (elements, buffer) {
-	if (buffer == [] || buffer.indexOf("d") != buffer.lastIndexOf("d") || isNaN(parseInt(buffer))) return false;
+function pushDice(elements, buffer) {
+	if (buffer == [] || buffer.indexOf("d") != buffer.lastIndexOf("d") || isNaN(parseInt(buffer)) || parseInt(buffer) <= 0 || parseInt(buffer) > 10000) return false;
 	if (buffer.includes("d")) {
-		if (isNaN(parseInt(buffer.join("").split("d")[1]))) return false;
+		if (isNaN(parseInt(buffer.join("").split("d")[1])) || parseInt(buffer.join("").split("d")[1]) <= 0 || parseInt(buffer.join("").split("d")[1]) > 10000) return false;
 		elements.push({type: "dice", quantity: parseInt(buffer.join("").split("d", 2)[0]), faces: parseInt(buffer.join("").split("d", 2)[1])});
 	} else {
 		elements.push({type: "number", values: parseInt(buffer)})
@@ -63,6 +63,7 @@ function pushDice (elements, buffer) {
 function getRolls(elements) {
 	var dices = elements.filter((element) => element.type == "dice");
 	var quantity = dices.sort((element_a, element_b) => element_b.faces - element_a.faces).reduce((total, element) => total + element.quantity, 0);
+	if (quantity > 10000) return false;
 	var faces_mmc = dices.reduce(function(total, element) {
 		if(total % element.faces != 0) return total * element.faces;
 		else return total;
