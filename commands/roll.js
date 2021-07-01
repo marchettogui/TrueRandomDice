@@ -7,26 +7,29 @@ module.exports = (Client, message) => {
 	var rolls = [];
 
 	if ((elements = getExpressionElements(expression)) && (rolls = getRolls(elements))) {
-		
-		Request.open("GET", `https://www.random.org/integers/?num=${rolls.quantity}&min=1&max=${rolls.faces_mmc}&col=1&base=10&format=plain&rnd=new`);
-		Request.send();
-		Request.onload = () => {
-			if (Request.status === 200){
-				parsed_response = getRequestResults(Request.responseText);
-				elements.forEach(function(element) {
-					if (element.type == "dice") {
-						element.values = [];
-						for (i = 0; i < element.quantity; i++) {
-							element.values.push(Math.ceil(parsed_response.shift() * element.faces / rolls.faces_mmc));
+		if (rolls.faces_mmc <= 1000000000) {
+			Request.open("GET", `https://www.random.org/integers/?num=${rolls.quantity}&min=1&max=${rolls.faces_mmc}&col=1&base=10&format=plain&rnd=new`);
+			Request.send();
+			Request.onload = () => {
+				if (Request.status === 200){
+					parsed_response = getRequestResults(Request.responseText);
+					elements.forEach(function(element) {
+						if (element.type == "dice") {
+							element.values = [];
+							for (i = 0; i < element.quantity; i++) {
+								element.values.push(Math.ceil(parsed_response.shift() * element.faces / rolls.faces_mmc));
+							}
 						}
-					}
-				});
-				result_string = getResultString(elements);
+					});
+					result_string = getResultString(elements);
 
-				message.channel.send({embed: {type: "rich", color: message.author.id % 0xFFFFFF, fields: [{name: `${message.member.displayName}`, value: `${result_string}`}]}});
-			} else {
-				console.log(`error ${Request.status} ${Request.statusText}`);
+					message.channel.send({embed: {type: "rich", color: message.author.id % 0xFFFFFF, fields: [{name: `${message.member.displayName}`, value: `${result_string}`}]}});
+				} else {
+					console.log(`error ${Request.status} ${Request.statusText}`);
+				}
 			}
+		} else {
+			message.channel.send({embed: {color = message.author.id % 0xFFFFFF, title: "Não vai dá não", description: `Se eu rolar esse dados tem uma chance em ${rolls.faces_mmc} de ser invocado o Cthulhu. Não podemos arriscar né...`}})
 		}
 	} else {
 		message.channel.send({embed: {color: message.author.id % 0xFFFFFF, title: "Seu burro! Não é assim que rola dados!", description: `Veja em ${Config.prefix}info como me mandar rolar seus dados\n*Jonathan sai e bate a porta*\nOuve-se ao fundo: \"Verme insolente!\"`}})
