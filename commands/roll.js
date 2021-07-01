@@ -11,8 +11,8 @@ module.exports = (Client, message) => {
 			Request.open("GET", `https://www.random.org/integers/?num=${rolls.quantity}&min=1&max=${rolls.faces_mmc}&col=1&base=10&format=plain&rnd=new`);
 			Request.send();
 			Request.onload = () => {
-				parsed_response = getRequestResults(Request.responseText);
 				if (Request.status === 200){
+					parsed_response = getRequestResults(Request.responseText);
 					elements.forEach(function(element) {
 						if (element.type == "dice") {
 							element.values = [];
@@ -25,7 +25,7 @@ module.exports = (Client, message) => {
 
 					message.channel.send({embed: {type: "rich", color: message.author.id % 0xFFFFFF, fields: [{name: `${message.member.displayName}`, value: `${result_string}`}]}});
 				} else {
-					console.log(`error ${Request.status} ${Request.statusText}: ${parsed_response}`);
+					console.log(`error ${Request.status} ${Request.statusText}: ${Request.responseText}`);
 				}
 			}
 		} else {
