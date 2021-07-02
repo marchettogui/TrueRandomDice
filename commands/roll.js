@@ -92,7 +92,7 @@ function getRequestResults(responseText) {
 
 function getResult(elements) {
 	var result = elements[0].values.reduce((total, value) => total + value, 0);
-	
+
 	for (i = 1; i < elements.length; i++) {
 		if (elements[i].values == "+") {
 			i++;
@@ -134,13 +134,14 @@ function getResult(elements) {
 function getResultString(elements) {
 	var result_string = [];
 	var result = getResult(elements);
-	for (i = 0; i < elements.length; i++) {
-		if (elements[i].type == "dice") {
-			result_string.push("[", elements[i].values.join(", "), "]");
+
+	elements.forEach(function(element) {
+		if (element.type == "dice") {
+			result_string.push("[", element.values.join(","), "]");
 		} else {
-			result_string.push(elements[i].values);
+			result_string.push(element.values);
 		}
-	}
+	});
 	if (elements.length > 1 || elements[0].values.length > 1) result_string.push("=", result);
 
 	if (result_string.join("").length <= 1024) return result_string.join("");
