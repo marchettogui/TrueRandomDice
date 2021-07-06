@@ -25,6 +25,7 @@ module.exports = (Client, message) => {
 
 					message.channel.send({embed: {type: "rich", color: message.author.id % 0xFFFFFF, fields: [{name: `${message.member.displayName}`, value: `${result_string}`}]}});
 				} else {
+					message.channel.send({embed: {type: "link", color: message.author.id % 0xFFFFFF, fields: [{name: "Deu erro aqui", value: "Fala com o Guizzão"}]}});
 					console.log(`error ${Request.status} ${Request.statusText}: ${Request.responseText}`);
 				}
 			}
@@ -137,7 +138,7 @@ function getResultString(elements) {
 
 	elements.forEach(function(element) {
 		if (element.type == "dice") {
-			result_string.push("[", element.values.join(","), "]");
+			result_string.push("[", element.values.join(", "), "]");
 		} else {
 			result_string.push(element.values);
 		}
