@@ -1,18 +1,18 @@
 module.exports = (Client, message) => {
-	const Config = require("../config.json");
-	const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-	const Request = new XMLHttpRequest();
+	const config = require("../config.json");
+	const xmlHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+	const request = new xmlHttpRequest();
 	var expression = message.content.split(" ").slice(1, ).join("");
 	var elements = [];
 	var rolls = [];
 
 	if ((elements = getExpressionElements(expression)) && (rolls = getRolls(elements))) {
 		if (rolls.faces_mmc <= 1000000000) {
-			Request.open("GET", `https://www.random.org/integers/?num=${rolls.quantity}&min=1&max=${rolls.faces_mmc}&col=1&base=10&format=plain&rnd=new`);
-			Request.send();
-			Request.onload = () => {
-				if (Request.status === 200){
-					parsed_response = getRequestResults(Request.responseText);
+			request.open("GET", `https://www.random.org/integers/?num=${rolls.quantity}&min=1&max=${rolls.faces_mmc}&col=1&base=10&format=plain&rnd=new`);
+			request.send();
+			request.onload = () => {
+				if (request.status === 200){
+					parsed_response = getRequestResults(request.responseText);
 					elements.forEach(function(element) {
 						if (element.type == "dice") {
 							element.values = [];
@@ -26,14 +26,14 @@ module.exports = (Client, message) => {
 					message.channel.send({embed: {type: "rich", color: message.author.id % 0xFFFFFF, fields: [{name: `${message.member.displayName}`, value: `${result_string}`}]}});
 				} else {
 					message.channel.send({embed: {type: "link", color: message.author.id % 0xFFFFFF, fields: [{name: "Deu erro aqui", value: "Fala com o Guizzão"}]}});
-					console.log(`error ${Request.status} ${Request.statusText}: ${Request.responseText}`);
+					console.log(`error ${request.status} ${request.statusText}: ${request.responseText}`);
 				}
 			}
 		} else {
 			message.channel.send({embed: {color: message.author.id % 0xFFFFFF, title: "Não vai dá não", description: `Se eu rolar esse dados tem uma chance em ${rolls.faces_mmc} de invocar o Cthulhu. Não podemos arriscar né...`}})
 		}
 	} else {
-		message.channel.send({embed: {color: message.author.id % 0xFFFFFF, title: "Seu burro! Não é assim que rola dados!", description: `Veja em ${Config.prefix}info como me mandar rolar seus dados\n*Jonathan sai e bate a porta*\nOuve-se ao fundo: \"Verme insolente!\"`}})
+		message.channel.send({embed: {color: message.author.id % 0xFFFFFF, title: "Seu burro! Não é assim que rola dados!", description: `Veja em ${config.prefix}info como me mandar rolar seus dados\n*Jonathan sai e bate a porta*\nOuve-se ao fundo: \"Verme insolente!\"`}})
 	}
 }
 
