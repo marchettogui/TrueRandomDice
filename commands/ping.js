@@ -1,3 +1,3 @@
-module.exports = (Client, message) => {
+module.exports = (client, message) => {
 	message.channel.send("pong");
 }

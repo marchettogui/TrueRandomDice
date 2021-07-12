@@ -1,4 +1,4 @@
-module.exports = (Client, message) => {
+module.exports = (client, message) => {
 	const config = require("../config.json");
 	const xmlHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 	const request = new xmlHttpRequest();
@@ -8,7 +8,7 @@ module.exports = (Client, message) => {
 
 	if ((elements = getExpressionElements(expression)) && (rolls = getRolls(elements))) {
 		if (rolls.faces_mmc <= 1000000000) {
-			console.log(`Resquesting: ${rolls} on ${message.guild.name}`);
+			console.log(`Resquesting: ${rolls.quantity}|${rolls.faces_mmc} on ${message.guild.name}`);
 			client.users.fetch(process.env.ID).then(user => user.send(`Resquesting: ${rolls} on ${message.guild.name}`));
 			request.open("GET", `https://www.random.org/integers/?num=${rolls.quantity}&min=1&max=${rolls.faces_mmc}&col=1&base=10&format=plain&rnd=new`);
 			request.send();
